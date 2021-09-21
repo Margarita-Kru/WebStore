@@ -1,0 +1,33 @@
+﻿    <section id="cart_items">
+        <div class="container">
+            <div class="breadcrumbs">
+                <ol class="breadcrumb">
+                    <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li class="active">Оформление заказа</li>
+                </ol>
+            </div><!--/breadcrums-->
+
+            <div class="step-one">
+                <h2 class="heading">Шаг 1</h2>
+            </div>
+
+            <partial name="Partial/_CheckoutOptions" />
+
+            <div class="register-req">
+                <p>Пожалуйста, используйте "Зарегистрироваться и оформить заказ" для получения лёгкого доступа к истории своих заказов, либо Вы можете оформить заказ без регистрации</p>
+            </div><!--/register-req-->
+
+            <partial name="Partial/_ShopperInfo" />
+
+            <div class="review-payment">
+                <h2>Review & Payment</h2>
+            </div>
+
+            <partial name="Partial/_CartInfo" />
+
+            <partial name="Partial/_PaymentOptions" />
+
+        </div>
+    </section> <!--/#cart_items-->
+
+
