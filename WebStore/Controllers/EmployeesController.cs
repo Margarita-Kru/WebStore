@@ -1,26 +1,26 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Linq;
-using WebStore.Data;
-using WebStore.Models;
+using Microsoft.Extensions.Logging;
+using WebStore.Services.Interfaces;
 
 namespace WebStore.Controllers
 {
     public class EmployeesController : Controller
     {
-        public readonly IEnumerable<Employee> _Employees;
+        private readonly IEmployeesData _EmployeesData;
+        private readonly ILogger<EmployeesController> _Logger;
 
-        public EmployeesController()
+        public EmployeesController(IEmployeesData EmployeesData, ILogger<EmployeesController> Logger)
         {
-            _Employees = TestData.Employees;
+            _EmployeesData = EmployeesData;
+            _Logger = Logger;
         }
         public IActionResult Index()
         {
-            return View(_Employees);
+            return View(_EmployeesData.GetAll());
         }
         public IActionResult Details(int id)
         {
-            var employee = _Employees.FirstOrDefault(e => e.Id == id);
+            var employee = _EmployeesData.GetById(id);
 
             if (employee is null)
                 return NotFound(); 
