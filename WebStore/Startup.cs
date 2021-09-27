@@ -26,6 +26,7 @@ namespace WebStore
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseStaticFiles();
 
             app.UseRouting();
 
