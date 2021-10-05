@@ -32,6 +32,9 @@ namespace WebStore
                 app.UseDeveloperExceptionPage();
                 app.UseBrowserLink();
             }
+
+            app.UseStatusCodePagesWithRedirects("~/home/status/{0}");
+
             app.UseStaticFiles();
 
             app.UseRouting();
