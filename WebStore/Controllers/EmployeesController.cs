@@ -25,8 +25,16 @@ namespace WebStore.Controllers
             var employee = _EmployeesData.GetById(id);
 
             if (employee is null)
-                return NotFound(); 
-            return View(employee);
+                return NotFound();
+            var model = new EmployeeViewModel
+            {
+                Id = employee.Id,
+                FirstName = employee.FirstName,
+                LastName = employee.LastName,
+                Patronymic = employee.Patronymic,
+                Age = employee.Age,
+            };
+            return View(model);
         }
         public IActionResult Create() => View("Edit", new EmployeeViewModel());
 
