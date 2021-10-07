@@ -4,14 +4,15 @@ using System.Collections.Generic;
 using System.Linq;
 using WebStore.Data;
 using WebStore.Models;
+using WebStore.Services.Interfaces;
 
-namespace WebStore.Services.Interfaces
+namespace WebStore.Services.InMemory
 {
     public class InMemoryEmployeesData : IEmployeesData
     {
         private readonly ILogger<InMemoryEmployeesData> logger;
 
-        private int _CurrentMaxId; 
+        private int _CurrentMaxId;
 
         public InMemoryEmployeesData(ILogger<InMemoryEmployeesData> Logger)
         {
