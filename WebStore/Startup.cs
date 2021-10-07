@@ -1,10 +1,14 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using WebStore.Services;
+using WebStore.DAL.Context;
+using WebStore.Data;
+using WebStore.Services.InMemory;
+using WebStore.Services.InSQL;
 using WebStore.Services.Interfaces;
 
 namespace WebStore
@@ -19,8 +23,16 @@ namespace WebStore
         }
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddDbContext<WebStoreDB>(opt =>
+            opt.UseSqlServer(Configuration.GetConnectionString("SqlServer")));
+
+
+            services.AddTransient<WebStoreDbInitializer>();
+
             services.AddSingleton<IEmployeesData, InMemoryEmployeesData>();
-            services.AddSingleton<IProductData, InMemoryProductData>();
+            //services.AddSingleton<IProductData, InMemoryProductData>();
+            services.AddScoped<IProductData, SqlProductData>();
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
         }
@@ -32,6 +44,9 @@ namespace WebStore
                 app.UseDeveloperExceptionPage();
                 app.UseBrowserLink();
             }
+
+            app.UseStatusCodePagesWithRedirects("~/home/status/{0}");
+
             app.UseStaticFiles();
 
             app.UseRouting();

@@ -7,6 +7,9 @@
     <meta name="author" content="">
     <title>Home | E-Shopper</title>
     @await Html.PartialAsync("Partial/_Styles")
+
+    @await RenderSectionAsync("Styles", false)
+
     @*<link rel="shortcut icon" href="images/ico/favicon.ico">*@
 </head><!--/head-->
 
@@ -21,6 +24,8 @@
 
 
     <partial name="Partial/_Scripts" />
+
+    @await RenderSectionAsync("Scripts", false) 
 
 </body>
 </html>
