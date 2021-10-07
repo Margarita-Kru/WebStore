@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System.Linq;
 using System.Threading.Tasks;
 using WebStore.DAL.Context;
@@ -8,22 +9,31 @@ namespace WebStore.Data
     public class WebStoreDbInitializer
     {
         private readonly WebStoreDB _db;
-        public WebStoreDbInitializer(WebStoreDB db)
+        private readonly ILogger<WebStoreDbInitializer> _Logger;
+
+        public WebStoreDbInitializer(WebStoreDB db, ILogger<WebStoreDbInitializer> Logger)
         {
             _db = db;
+            _Logger = Logger;
         }
         public async Task InitializeAsync()
         {
+            _Logger.LogInformation("Запуск инициализации БД");
+
             var pending_migrations = await _db.Database.GetPendingMigrationsAsync();
             var applied_migrations = await _db.Database.GetAppliedMigrationsAsync();
             if (pending_migrations.Any())
+            {
+                _Logger.LogInformation("Применение миграций: {0}", string.Join(",", pending_migrations));
                 await _db.Database.MigrateAsync();
+            }
             await InitializeProductsAsync();
         }
 
         private async Task InitializeProductsAsync()
         {
-            using(await _db.Database.BeginTransactionAsync())
+            _Logger.LogInformation("Запись секций в БД");
+            await using(await _db.Database.BeginTransactionAsync())
             {
                 _db.Sections.AddRange(TestData.Sections);
 
@@ -32,7 +42,10 @@ namespace WebStore.Data
                 await _db.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [dbo].[Sections] OFF");
                 await _db.Database.CommitTransactionAsync();
             }
-            using (await _db.Database.BeginTransactionAsync())
+            _Logger.LogInformation("Запись секций выполнена успешно");
+
+            _Logger.LogInformation("Запись брендов в БД");
+            await using (await _db.Database.BeginTransactionAsync())
             {
                 _db.Brands.AddRange(TestData.Brands);
 
@@ -41,7 +54,10 @@ namespace WebStore.Data
                 await _db.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [dbo].[Brands] OFF");
                 await _db.Database.CommitTransactionAsync();
             }
-            using (await _db.Database.BeginTransactionAsync())
+            _Logger.LogInformation("Запись брендов выполнена успешно");
+
+            _Logger.LogInformation("Запись товаров в БД");
+            await using (await _db.Database.BeginTransactionAsync())
             {
                 _db.Products.AddRange(TestData.Products);
 
@@ -50,6 +66,8 @@ namespace WebStore.Data
                 await _db.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [dbo].[Products] OFF");
                 await _db.Database.CommitTransactionAsync();
             }
+            _Logger.LogInformation("Запись товаров выполнена успешно");
+
         }
     }
 }
