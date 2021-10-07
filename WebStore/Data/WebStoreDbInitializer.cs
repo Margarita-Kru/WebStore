@@ -33,6 +33,12 @@ namespace WebStore.Data
         private async Task InitializeProductsAsync()
         {
             _Logger.LogInformation("Запись секций в БД");
+
+            if(_db.Sections.Any())
+            {
+                _Logger.LogInformation("Инициализация БД информацией о товарах не требуется");
+                return;
+            }
             await using(await _db.Database.BeginTransactionAsync())
             {
                 _db.Sections.AddRange(TestData.Sections);
