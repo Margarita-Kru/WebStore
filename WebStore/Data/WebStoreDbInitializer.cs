@@ -34,11 +34,16 @@ namespace WebStore.Data
         {
             _Logger.LogInformation("Запись секций в БД");
 
+
             if(_db.Sections.Any())
             {
                 _Logger.LogInformation("Инициализация БД информацией о товарах не требуется");
                 return;
             }
+
+            var sections_pool = TestData.Sections.ToDictionary(section=>section.Id);
+            var brands_pool = TestData.Brands.ToDictionary(brand=> brand.Id);
+
             await using(await _db.Database.BeginTransactionAsync())
             {
                 _db.Sections.AddRange(TestData.Sections);
