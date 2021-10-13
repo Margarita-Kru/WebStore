@@ -35,6 +35,9 @@ namespace WebStore.Controllers
             if (register_result.Succeeded)
             {
                 await _SignInManager.SignInAsync(user, false);
+
+                await _UserManager.AddToRoleAsync(user, Role.Users);
+
                 return RedirectToAction("Index", "Home");
             }
             foreach (var error in register_result.Errors)
