@@ -1,11 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using WebStore.Domain.Entities.Identity;
 using WebStore.Models;
 using WebStore.Services.Interfaces;
 using WebStore.ViewModels;
 
 namespace WebStore.Controllers
 {
+    [Authorize]
     public class EmployeesController : Controller
     {
         private readonly IEmployeesData _EmployeesData;
@@ -36,8 +39,11 @@ namespace WebStore.Controllers
             };
             return View(model);
         }
+
+        [Authorize(Roles = Role.Administrators)]
         public IActionResult Create() => View("Edit", new EmployeeViewModel());
 
+        [Authorize(Roles = Role.Administrators)]
         public IActionResult Edit (int? id)
         {
             if (id is null)
@@ -57,6 +63,7 @@ namespace WebStore.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = Role.Administrators)]
         public IActionResult Edit(EmployeeViewModel model)
         {
             if (!ModelState.IsValid)
@@ -76,6 +83,7 @@ namespace WebStore.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = Role.Administrators)]
         public IActionResult Delete (int id)
         {
             if (id < 0) return BadRequest();
@@ -93,6 +101,7 @@ namespace WebStore.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = Role.Administrators)]
         public IActionResult DeleteConfirmed(int id)
         {
             _EmployeesData.Delete(id);
