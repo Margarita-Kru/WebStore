@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 using System;
+using System.Linq;
+using WebStore.Domain.Entities;
 using WebStore.Services.Interfaces;
 using WebStore.ViewModels;
 
@@ -10,6 +13,33 @@ namespace WebStore.Services.InCookies
         private readonly IHttpContextAccessor _HttpContextAccessor;
         private readonly IProductData _ProductData;
         private readonly string _CartName;
+
+        private Cart Cart
+        {
+            get
+            {
+                var context = _HttpContextAccessor.HttpContext;
+                var cookies = context!.Response.Cookies;
+
+                var cart_cookies = context.Request.Cookies[_CartName];
+                if (cart_cookies is null)
+                {
+                    var cart = new Cart();
+                    cookies.Append(_CartName, JsonConvert.SerializeObject(cart));
+                    return cart;
+                }
+
+                ReplaceCart(cookies, cart_cookies);
+                return JsonConvert.DeserializeObject<Cart>(cart_cookies);
+            }
+            set => ReplaceCart(_HttpContextAccessor.HttpContext!.Response.Cookies, JsonConvert.SerializeObject(value));
+        }
+
+        private void ReplaceCart(IResponseCookies cookies, string cart)
+        {
+            cookies.Delete(_CartName);
+            cookies.Append(_CartName, cart);
+        }
 
         public InCookiesCartService(IHttpContextAccessor HttpContextAccessor,IProductData ProductData)
         {
@@ -24,17 +54,38 @@ namespace WebStore.Services.InCookies
 
         public void Add(int Id)
         {
-            throw new NotImplementedException();
+            var cart = Cart;
+
+            var item = cart.Items.FirstOrDefault(i => i.ProductId == Id);
+            if (item is null)
+                cart.Items.Add(new CartItem { ProductId = Id, Quantity = 1 });
+            else
+                item.Quantity++;
+
+            Cart = cart;
         }
 
         public void Clear()
         {
-            throw new NotImplementedException();
+            var cart = Cart;
+            cart.Items.Clear();
+            Cart = cart;
         }
 
         public void Decrement(int Id)
         {
-            throw new NotImplementedException();
+            var cart = Cart;
+
+            var item = cart.Items.FirstOrDefault(i => i.ProductId == Id);
+            if (item is null) return;
+
+            if (item.Quantity > 0)
+                item.Quantity--;
+
+            if (item.Quantity <= 0)
+                cart.Items.Remove(item);
+
+            Cart = cart;
         }
 
         public CartViewModel GetViewModel()
@@ -44,7 +95,14 @@ namespace WebStore.Services.InCookies
 
         public void Remove(int Id)
         {
-            throw new NotImplementedException();
+            var cart = Cart;
+
+            var item = cart.Items.FirstOrDefault(i => i.ProductId == Id);
+            if (item is null) return;
+
+            cart.Items.Remove(item);
+
+            Cart = cart;
         }
     }
 }
