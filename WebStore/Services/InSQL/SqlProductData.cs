@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,11 +19,23 @@ namespace WebStore.Services.InSQL
             _db = db;
         }
 
+        public Brand GetBrandById(int Id) => _db.Brands.SingleOrDefault(b => b.Id == Id);
+
         public IEnumerable<Brand> GetBrands() => _db.Brands;
+
+        public Product GetProductById(int Id)
+        {
+            return _db.Products
+                .Include(p=>p.Brand)
+                .Include(p=>p.Section)
+                .FirstOrDefault(p => p.Id == Id);
+        }
 
         public IEnumerable<Product> GetProducts(ProductFilter Filter = null)
         {
-            IQueryable<Product> querry = _db.Products;
+            IQueryable<Product> querry = _db.Products
+                .Include(p => p.Brand)
+                .Include(p => p.Section);
 
             if (Filter?.SectionId != null)
                 querry = querry.Where(p => p.SectionId == Filter.SectionId);
@@ -31,6 +44,8 @@ namespace WebStore.Services.InSQL
                 querry = querry.Where(p => p.BrandId == Filter.BrandId);
             return querry;
         }
+
+        public Section GetSectionById(int Id) => _db.Sections.SingleOrDefault(s => s.Id == Id);
 
         public IEnumerable<Section> GetSections() => _db.Sections;
     }
