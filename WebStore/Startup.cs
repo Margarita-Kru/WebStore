@@ -28,10 +28,25 @@ namespace WebStore
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddDbContext<WebStoreDB>(opt =>
-            opt.UseSqlServer(Configuration.GetConnectionString("SqlServer")));
+            var database_type = Configuration["Database"];
 
-            services.AddIdentity<User, Role>()
+            switch (database_type)
+            {
+                default: throw new InvalidOperationException($"Тип БД {database_type} не поддерживается");
+
+                case "SqlServer":
+                    services.AddDbContext<WebStoreDB>(opt =>
+                        opt.UseSqlServer(Configuration.GetConnectionString(database_type)));
+                    break;
+
+                case "Sqlite":
+                    services.AddDbContext<WebStoreDB>(opt =>
+                        opt.UseSqlite(Configuration.GetConnectionString(database_type),
+                            o => o.MigrationsAssembly("WebStore.DAL.Sqlite")));
+                    break;
+            }
+
+                    services.AddIdentity<User, Role>()
                 .AddEntityFrameworkStores<WebStoreDB>()
                 .AddDefaultTokenProviders();
 
