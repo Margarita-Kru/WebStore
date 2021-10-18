@@ -4,7 +4,7 @@ using System.Linq;
 using WebStore.Domain.Entities;
 using WebStore.Domain.ViewModels;
 using WebStore.Infrastructure.Mapping;
-using WebStore.Services.Interfaces;
+using WebStore.Interfaces.Services;
 
 namespace WebStore.Services.InCookies
 {
