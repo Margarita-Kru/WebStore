@@ -3,7 +3,7 @@ using System.Linq;
 using WebStore.Domain.Entities;
 using WebStore.Domain.ViewModels;
 
-namespace WebStore.Infrastructure.Mapping
+namespace WebStore.Services.Mapping
 {
     public static class ProductMapper
     {
@@ -15,10 +15,10 @@ namespace WebStore.Infrastructure.Mapping
                 Name = product.Name,
                 Price = product.Price,
                 ImageUrl = product.ImageUrl,
-                Section =product.Section.Name,
+                Section = product.Section.Name,
                 Brand = product.Brand?.Name,
             };
 
-        public static IEnumerable<ProductViewModel> ToView(this IEnumerable<Product> products) => products.Select(ToView); 
+        public static IEnumerable<ProductViewModel> ToView(this IEnumerable<Product> products) => products.Select(ToView);
     }
 }

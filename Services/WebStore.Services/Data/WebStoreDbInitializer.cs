@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using WebStore.DAL.Context;
 using WebStore.Domain.Entities.Identity;
 
-namespace WebStore.Data
+namespace WebStore.Services.Data
 {
     public class WebStoreDbInitializer
     {
@@ -43,7 +43,7 @@ namespace WebStore.Data
             {
                 await InitializeProductsAsync();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 _Logger.LogError(e, "Ошибка инициализации каталога товаров");
                 throw;
@@ -65,14 +65,14 @@ namespace WebStore.Data
             _Logger.LogInformation("Запись секций в БД");
 
 
-            if(_db.Sections.Any())
+            if (_db.Sections.Any())
             {
                 _Logger.LogInformation("Инициализация БД информацией о товарах не требуется");
                 return;
             }
 
-            var sections_pool = TestData.Sections.ToDictionary(section=>section.Id);
-            var brands_pool = TestData.Brands.ToDictionary(brand=> brand.Id);
+            var sections_pool = TestData.Sections.ToDictionary(section => section.Id);
+            var brands_pool = TestData.Brands.ToDictionary(brand => brand.Id);
 
             foreach (var child_section in TestData.Sections.Where(s => s.ParentId is not null))
                 child_section.Parent = sections_pool[(int)child_section.ParentId!];
@@ -87,7 +87,7 @@ namespace WebStore.Data
                 product.BrandId = null;
             }
 
-            foreach(var section in TestData.Sections)
+            foreach (var section in TestData.Sections)
             {
                 section.Id = 0;
                 section.ParentId = null;
@@ -130,7 +130,7 @@ namespace WebStore.Data
             await CheckRole(Role.Administrators);
             await CheckRole(Role.Users);
 
-            if(await _UserManager.FindByNameAsync(User.Administrator) is null)
+            if (await _UserManager.FindByNameAsync(User.Administrator) is null)
             {
                 _Logger.LogInformation("Пользователь {0} не существует", User.Administrator);
                 var admin = new User

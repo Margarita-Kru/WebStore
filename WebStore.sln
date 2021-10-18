@@ -19,7 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebStore.DAL.Sqlite", "Data
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebStore", "UI\WebStore\WebStore.csproj", "{5101DEB7-3E17-4683-BDBE-C86534FC3240}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebStore.Interfaces", "Services\WebStore.Interfaces\WebStore.Interfaces.csproj", "{1F5B6C75-9C33-4DE3-8F55-EA01592E7A8D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebStore.Interfaces", "Services\WebStore.Interfaces\WebStore.Interfaces.csproj", "{1F5B6C75-9C33-4DE3-8F55-EA01592E7A8D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebStore.Services", "Services\WebStore.Services\WebStore.Services.csproj", "{FBB686EC-A600-45CA-B494-6C3B462C61A1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +49,10 @@ Global
 		{1F5B6C75-9C33-4DE3-8F55-EA01592E7A8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1F5B6C75-9C33-4DE3-8F55-EA01592E7A8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1F5B6C75-9C33-4DE3-8F55-EA01592E7A8D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FBB686EC-A600-45CA-B494-6C3B462C61A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBB686EC-A600-45CA-B494-6C3B462C61A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBB686EC-A600-45CA-B494-6C3B462C61A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBB686EC-A600-45CA-B494-6C3B462C61A1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -57,6 +63,7 @@ Global
 		{5C4D009D-6100-4FB7-8A0C-EC64828AC7CA} = {990C83B3-74C3-42BF-B7E0-3CBB7D32A6A8}
 		{5101DEB7-3E17-4683-BDBE-C86534FC3240} = {83DE90F0-E0AC-4FF3-9C0F-A2EA0D5059E7}
 		{1F5B6C75-9C33-4DE3-8F55-EA01592E7A8D} = {D1159138-D4FC-4A14-9961-5AC731650F15}
+		{FBB686EC-A600-45CA-B494-6C3B462C61A1} = {D1159138-D4FC-4A14-9961-5AC731650F15}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4DB1F3A5-4E91-451B-A805-6BDF973B75AB}
