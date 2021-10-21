@@ -10,10 +10,12 @@ using System;
 using WebStore.DAL.Context;
 using WebStore.Domain.Entities.Identity;
 using WebStore.Interfaces.Services;
+using WebStore.Interfaces.TestAPI;
 using WebStore.Services.Data;
 using WebStore.Services.InCookies;
 using WebStore.Services.InMemory;
 using WebStore.Services.InSQL;
+using WebStore.WebAPI.Clients.Values;
 
 namespace WebStore
 {
@@ -90,6 +92,8 @@ namespace WebStore
             services.AddScoped<ICartService, InCookiesCartService>();
             services.AddScoped<IOrderService, SqlOrderService>();
 
+            services.AddHttpClient<IValuesService, ValuesClient>(client => 
+            client.BaseAddress = new(Configuration["WebAPI"]));
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
         }
