@@ -9,18 +9,18 @@ using WebStore.Interfaces;
 
 namespace WebStore.WebAPI.Controllers.Identity
 {
-    [Route(WebAPIAddresses.Identity.Users)]
+    [Route(WebAPIAddresses.Identity.Roles)]
     [ApiController]
-    public class UsersApiController : ControllerBase
+    public class RolesApiController : ControllerBase
     {
-        private readonly UserStore<User, Role, WebStoreDB> _UserStore;
+        private readonly RoleStore<Role> _RoleStore;
 
-        public UsersApiController(WebStoreDB db)
+        public RolesApiController(WebStoreDB db)
         {
-            _UserStore = new UserStore<User, Role, WebStoreDB>(db);
+            _RoleStore = new(db);
         }
 
         [HttpGet("all")]
-        public async Task<IEnumerable<User>> GetAll() => await _UserStore.Users.ToArrayAsync();
+        public async Task<IEnumerable<Role>> GetAll() => await _RoleStore.Roles.ToArrayAsync();
     }
 }
