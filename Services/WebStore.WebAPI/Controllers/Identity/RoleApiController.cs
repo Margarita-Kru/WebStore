@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WebStore.Interfaces;
 
 namespace WebStore.WebAPI.Controllers.Identity
 {
-    [Route("api/[controller]")]
+    [Route(WebAPIAddresses.Identity.Roles)]
     [ApiController]
     public class RoleApiController : ControllerBase
     {
