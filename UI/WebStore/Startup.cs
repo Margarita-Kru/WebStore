@@ -15,6 +15,9 @@ using WebStore.Services.Data;
 using WebStore.Services.InCookies;
 using WebStore.Services.InMemory;
 using WebStore.Services.InSQL;
+using WebStore.WebAPI.Clients.Employees;
+using WebStore.WebAPI.Clients.Orders;
+using WebStore.WebAPI.Clients.Products;
 using WebStore.WebAPI.Clients.Values;
 
 namespace WebStore
@@ -29,7 +32,6 @@ namespace WebStore
         }
         public void ConfigureServices(IServiceCollection services)
         {
-
             var database_type = Configuration["Database"];
 
             switch (database_type)
@@ -48,7 +50,7 @@ namespace WebStore
                     break;
             }
 
-                    services.AddIdentity<User, Role>()
+            services.AddIdentity<User, Role>()
                 .AddEntityFrameworkStores<WebStoreDB>()
                 .AddDefaultTokenProviders();
 
@@ -86,14 +88,20 @@ namespace WebStore
 
             services.AddTransient<WebStoreDbInitializer>();
 
-            services.AddSingleton<IEmployeesData, InMemoryEmployeesData>();
+            //services.AddSingleton<IEmployeesData, InMemoryEmployeesData>();
 
-            services.AddScoped<IProductData, SqlProductData>();
+            //services.AddScoped<IProductData, SqlProductData>();
+
             services.AddScoped<ICartService, InCookiesCartService>();
-            services.AddScoped<IOrderService, SqlOrderService>();
 
-            services.AddHttpClient<IValuesService, ValuesClient>(client => 
-            client.BaseAddress = new(Configuration["WebAPI"]));
+            //services.AddScoped<IOrderService, SqlOrderService>();
+
+            //services.AddHttpClient<IValuesService, ValuesClient>(client => client.BaseAddress = new(Configuration["WebAPI"]));
+            services.AddHttpClient("WebStore/WebAPI", client => client.BaseAddress = new(Configuration["WebAPI"]))
+                .AddTypedClient<IValuesService, ValuesClient>()
+                .AddTypedClient<IEmployeesData, EmployeesClient>()
+                .AddTypedClient<IOrderService, OrdersClient>()
+                .AddTypedClient<IProductData, ProductsClient>();
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
         }
