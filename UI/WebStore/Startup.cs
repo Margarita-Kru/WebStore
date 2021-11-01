@@ -23,9 +23,8 @@ namespace WebStore
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddIdentity<User, Role>()
+                .AddIdentityWebStoreWebAPIClients()
                 .AddDefaultTokenProviders();
-
-            services.AddIdentityWebStoreWebAPIClients();
 
             services.Configure<IdentityOptions>(opt =>
             {
