@@ -10,6 +10,7 @@ using System;
 using WebStore.DAL.Context;
 using WebStore.Domain.Entities.Identity;
 using WebStore.Interfaces.Services;
+using WebStore.Services.Data;
 using WebStore.Services.InCookies;
 using WebStore.Services.InMemory;
 using WebStore.Services.InSQL;
@@ -37,6 +38,8 @@ namespace WebStore.WebAPI
                             o => o.MigrationsAssembly("WebStore.DAL.Sqlite")));
                     break;
             }
+
+            services.AddScoped<WebStoreDbInitializer>();
 
             services.AddIdentity<User, Role>()
                 .AddEntityFrameworkStores<WebStoreDB>()

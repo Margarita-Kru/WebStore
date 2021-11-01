@@ -2,16 +2,13 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using WebStore.DAL.Context;
 using WebStore.Domain.Entities.Identity;
 using WebStore.Interfaces.Services;
 using WebStore.Interfaces.TestAPI;
-using WebStore.Services.Data;
 using WebStore.Services.InCookies;
 using WebStore.WebAPI.Clients.Employees;
 using WebStore.WebAPI.Clients.Identity;
@@ -25,26 +22,7 @@ namespace WebStore
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            var database_type = Configuration["Database"];
-
-            switch (database_type)
-            {
-                default: throw new InvalidOperationException($"Тип БД {database_type} не поддерживается");
-
-                case "SqlServer":
-                    services.AddDbContext<WebStoreDB>(opt =>
-                        opt.UseSqlServer(Configuration.GetConnectionString(database_type)));
-                    break;
-
-                case "Sqlite":
-                    services.AddDbContext<WebStoreDB>(opt =>
-                        opt.UseSqlite(Configuration.GetConnectionString(database_type),
-                            o => o.MigrationsAssembly("WebStore.DAL.Sqlite")));
-                    break;
-            }
-
             services.AddIdentity<User, Role>()
-                //.AddEntityFrameworkStores<WebStoreDB>()
                 .AddDefaultTokenProviders();
 
             services.AddHttpClient("WebStoreWebAPIIdentity", client => client.BaseAddress = new(Configuration["WebAPI"]))
@@ -90,17 +68,8 @@ namespace WebStore
                 opt.SlidingExpiration = true;
             });
 
-            services.AddTransient<WebStoreDbInitializer>();
-
-            //services.AddSingleton<IEmployeesData, InMemoryEmployeesData>();
-
-            //services.AddScoped<IProductData, SqlProductData>();
-
             services.AddScoped<ICartService, InCookiesCartService>();
 
-            //services.AddScoped<IOrderService, SqlOrderService>();
-
-            //services.AddHttpClient<IValuesService, ValuesClient>(client => client.BaseAddress = new(Configuration["WebAPI"]));
             services.AddHttpClient("WebStore/WebAPI", client => client.BaseAddress = new(Configuration["WebAPI"]))
                 .AddTypedClient<IValuesService, ValuesClient>()
                 .AddTypedClient<IEmployeesData, EmployeesClient>()
