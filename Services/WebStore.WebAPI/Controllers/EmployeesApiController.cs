@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using WebStore.Domain.Models;
 using WebStore.Interfaces;
 using WebStore.Interfaces.Services;
 
 namespace WebStore.WebAPI.Controllers
 {
+    /// <summary>Управление сотрудниками</summary>
     [Route(WebAPIAddresses.Employees)]
     [ApiController]
     public class EmployeesApiController : ControllerBase
@@ -12,6 +14,8 @@ namespace WebStore.WebAPI.Controllers
         private readonly IEmployeesData _EmployeesData;
         public EmployeesApiController(IEmployeesData EmployeesData) => _EmployeesData = EmployeesData;
 
+        /// <summary>Получение всех сотрудников</summary>
+        /// <returns>Список сотрудников</returns>
         [HttpGet]
         public IActionResult Get()
         {
@@ -19,7 +23,12 @@ namespace WebStore.WebAPI.Controllers
             return Ok(employees);
         }
 
+        /// <summary>Получение сотрудника по его идентификатору</summary>
+        /// <param name="id">Идентификатор сотрудника</param>
+        /// <returns>Сотрудник с указанным идентификатором</returns>
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Employee))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult GetById(int id)
         {
             var employee = _EmployeesData.GetById(id);
