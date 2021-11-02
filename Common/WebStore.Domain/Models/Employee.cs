@@ -23,5 +23,6 @@ namespace WebStore.Domain.Models
         /// <summary>Возраст</summary>
         public int Age { get; set; }
 
+        public override string ToString() => $"[{Id}]{LastName} {FirstName} {Patronymic} ({Age})";
     }
 }
