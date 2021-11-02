@@ -25,7 +25,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebStore.Services", "Servic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebStore.WebAPI", "Services\WebStore.WebAPI\WebStore.WebAPI.csproj", "{E294C104-4E21-46F4-B13B-6D781B460B53}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebStore.WebAPI.Clients", "Services\WebStore.WebAPI.Clients\WebStore.WebAPI.Clients.csproj", "{793DAA44-AE90-41C9-9064-65620819DFC5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebStore.WebAPI.Clients", "Services\WebStore.WebAPI.Clients\WebStore.WebAPI.Clients.csproj", "{793DAA44-AE90-41C9-9064-65620819DFC5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{07B14E33-A944-4142-9686-5EF1F325CFBC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
