@@ -11,6 +11,7 @@ using WebStore.Domain.Entities.Identity;
 using WebStore.Interfaces.Services;
 using WebStore.Interfaces.TestAPI;
 using WebStore.Logger;
+using WebStore.Services.Services;
 using WebStore.Services.Services.InCookies;
 using WebStore.WebAPI.Clients.Employees;
 using WebStore.WebAPI.Clients.Identity;
@@ -62,7 +63,7 @@ namespace WebStore
 
             //services.AddScoped<ICartService, InCookiesCartService>();
             services.AddScoped<ICartStore, InCookiesCartStore>();
-            services.AddScoped<ICartService, ICartService>();
+            services.AddScoped<ICartService, CartService>();
 
             services.AddHttpClient("WebStore/WebAPI", client => client.BaseAddress = new(Configuration["WebAPI"]))
                 .AddTypedClient<IValuesService, ValuesClient>()
