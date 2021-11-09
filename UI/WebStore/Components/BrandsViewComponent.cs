@@ -14,7 +14,7 @@ namespace WebStore.Components
         {
             _ProductData = ProductData;
         }
-        public IViewComponentResult Invoke() => View(GetBrands());
+        public IViewComponentResult Invoke(string BrandId) => View(GetBrands());
         private IEnumerable<BrandViewModel> GetBrands()=>
             _ProductData.GetBrands()
                 .OrderBy(b=>b.Order)
