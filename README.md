@@ -38,7 +38,3 @@
 3. В файле `appsettings.json` укажите строку подключения к вашей БД (или используйте SQLite).
 4. Примените миграции: `dotnet ef database update` (в проекте `WebStore.Data`).
 5. Запустите проекты `WebStore.WebAPI` и `WebStore.UI` одновременно.
-
-## Результаты тестирования
-
-[![Testing](https://github.com/Margarita-Kru/WebStore/actions/workflows/Testing.yml/badge.svg)](https://github.com/Margarita-Kru/WebStore/actions/workflows/Testing.yml)
